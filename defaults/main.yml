@@ -1,0 +1,7 @@
+---
+# Default region: see http://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region
+aws_vpc_region: "eu-west-2"
+
+# Create VPC is it does not exist - currently hardcoded as "present"
+aws_vpc_state: "present"
+...

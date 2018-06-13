@@ -1,0 +1,15 @@
+---
+- name: Create AWS Virtual Private Clouds
+  include_tasks: vpc_create.yml
+  with_items: "{{ aws_vpcs }}"
+  loop_control:
+    loop_var: aws_vpc
+  when: (arg_action is not defined) or (arg_action != 'delete')
+
+- name: Delete AWS Virtual Private Clouds
+  include_tasks: vpc_delete.yml
+  with_items: "{{ aws_vpcs }}"
+  loop_control:
+    loop_var: aws_vpc
+  when: (arg_action is defined) and (arg_action == 'delete')
+...

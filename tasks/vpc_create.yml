@@ -1,0 +1,23 @@
+---
+- name: Get VPC Information
+  include_tasks: "get_vpc_facts.yml"
+  vars:
+    vpc_tag: "{{ aws_vpc.aws_vpc_name }}"
+
+- block:
+    - name: Set resource tag name
+      set_fact:
+        resource_name: "{{ aws_vpc.aws_vpc_name | upper }}"
+
+    - name: Create Virtual Private Cloud {{ aws_vpc.aws_vpc_name }}
+      ec2_vpc_net:
+        aws_access_key: "{{ aws_access_key | default(omit) }}"
+        aws_secret_key: "{{ aws_secret_key | default(omit) }}"
+        name: "{{ aws_vpc.aws_vpc_name }}"
+        cidr_block: "{{ aws_vpc.aws_vpc_cidr_main }}"
+        region: "{{ aws_vpc.aws_vpc_region }}"
+        state: "present"
+        tags: "{{ aws_vpc.aws_vpc_tags | default(omit) }}"
+        tenancy: "{{ aws_vpc.aws_vpc_tenancy }}"
+  when: vpc_net_facts.vpcs == []
+...
